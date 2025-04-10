@@ -1,0 +1,151 @@
+2. 
+open "https://dbdiagram.io/d/67f6e14a4f7afba18402247e"
+
+3/4.
+ --TABLAS CREATE--
+
+-- Tabla MODALIDAD
+CREATE TABLE MODALIDAD (
+    id_modalidad SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100)
+);
+
+-- Tabla CAMPUS
+CREATE TABLE CAMPUS (
+    id_campus SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100),
+    Ubicacion VARCHAR(100)
+);
+
+-- Tabla PROMOCIONES
+CREATE TABLE PROMOCIONES (
+    id_promocion SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100),
+    Fecha DATE,
+    id_modalidad INT REFERENCES MODALIDAD(id_modalidad)
+);
+
+-- Tabla PRESENCIAL
+CREATE TABLE PRESENCIAL (
+    id_presencial SERIAL PRIMARY KEY,
+    tipo_modalidad VARCHAR(10), -- 'full_time' o 'part_time'
+    id_modalidad INT REFERENCES MODALIDAD(id_modalidad)
+);
+
+-- Tabla ESTUDIANTE
+CREATE TABLE ESTUDIANTE (
+    id_estudiante SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100),
+    Email VARCHAR(100),
+    Promocion VARCHAR(100),
+    fecha_comienzo DATE,
+    Campus INT REFERENCES CAMPUS(id_campus),
+    id_presencial INT REFERENCES PRESENCIAL(id_presencial)
+);
+
+-- Tabla PROFESORES
+CREATE TABLE PROFESORES (
+    id_profesores SERIAL PRIMARY KEY,
+    Nombre VARCHAR(100),
+    Rol VARCHAR(50),
+    Promocion VARCHAR(100),
+    Modalidad INT REFERENCES MODALIDAD(id_modalidad),
+    id_campus INT REFERENCES CAMPUS(id_campus)
+);
+
+--INSERT INTO UTILIZADOS--
+-- CAMPUS
+INSERT INTO CAMPUS (Nombre, Ubicacion) VALUES
+('FS', 'Madrid'),
+('DS', 'Madrid'),
+('CS', 'Madrid'),
+('FS', 'Valencia'),
+('DS', 'Valencia'),
+('CS', 'Valencia');
+
+-- MODALIDAD
+INSERT INTO MODALIDAD (Tipo) VALUES
+('PRESENCIAL'),
+('ONLINE');
+
+-- PRESENCIAL
+INSERT INTO PRESENCIAL (full_time, part_time, id_modalidad) VALUES
+(TRUE, FALSE, 1),
+(FALSE, TRUE, 1);
+
+-- PROMOCIONES
+INSERT INTO PROMOCIONES (Nombre, Fecha, id_modalidad) VALUES
+('Promoción DS', '2024-01-10', 1),
+('Promoción FS', '2024-01-20', 1),
+('Promoción CS', '2024-01-30', 2);
+
+-- VERTICAL
+INSERT INTO VERTICAL (Tipo, id_promociones) VALUES
+('Data_science', 1),
+('Full_stack', 2),
+('Cyber_security', 3);
+
+-- AULAS
+INSERT INTO AULAS (Nombre, Capacidad, id_campus) VALUES
+('Aula 101', 30, 1),
+('Aula 102', 25, 1),
+('Laboratorio 1', 20, 1),
+('Sala de Conferencias', 50, 1),
+('Aula 103', 35, 1);
+
+-- ESTUDIANTE
+INSERT INTO ESTUDIANTE (Nombre, Email, Promocion, fecha_comienzo, Campus) VALUES
+('Carlito Carrión', 'Carlito_Carrion@gmail.com', 'Febrero', '2024-02-12', 1),
+('Haydée Figueroa', 'Haydee_Figueroa@gmail.com', 'Febrero', '2024-02-12', 1),
+('Chita Mancebo', 'Chita_Mancebo@gmail.com', 'Febrero', '2024-02-12', 1),
+('Joaquina Asensio', 'Joaquina_Asensio@gmail.com', 'Febrero', '2024-02-12', 1),
+('Cristian Sarabia', 'Cristian_Sarabia@gmail.com', 'Febrero', '2024-02-12', 1),
+('Isabel Ibáñez', 'Isabel_Ibanez@gmail.com', 'Febrero', '2024-02-12', 1),
+('Desiderio Jordá', 'Desiderio_Jorda@gmail.com', 'Febrero', '2024-02-12', 1),
+('Rosalina Llanos', 'Rosalina_Llanos@gmail.com', 'Febrero', '2024-02-12', 1),
+('Amor Larrañaga', 'Amor_Larranaga@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Teodoro Alberola', 'Teodoro_Alberola@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Cleto Plana', 'Cleto_Plana@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Aitana Sebastián', 'Aitana_Sebastian@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Dolores Valbuena', 'Dolores_Valbuena@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Julie Ferrer', 'Julie_Ferrer@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Mireia Cabañas', 'Mireia_Cabanas@gmail.com', 'Septiembre', '2023-09-18', 1),
+('Flavia Amador', 'Flavia_Amador@gmail.com', 'Septiembre', '2023-09-18', 1);
+
+-- PROYECTO
+INSERT INTO PROYECTO (Nombre, Tipo) VALUES
+('Proyecto_HLF', 'Full_stack'),
+('Proyecto_EDA', 'Data_science'),
+('Proyecto_BBDD', 'Full_stack'),
+('Proyecto_ML', 'Data_science'),
+('Proyecto_Deployment', 'Cyber_security');
+
+-- ESTADO
+INSERT INTO ESTADO (id_proyecto, Calificaciones, Resultado) VALUES
+(1, 85, 'APTO'),
+(2, 90, 'APTO'),
+(3, 58, 'NO APTO'),
+(4, 72, 'APTO'),
+(5, 49, 'NO APTO');
+
+-- PROFESORES
+INSERT INTO PROFESORES (Nombre, Rol, Promocion, Modalidad) VALUES
+('Noa Yanez', 'TA', 'Septiembre', 1),
+('Saturnina Benitez', 'TA', 'Septiembre', 1),
+('Ana feliu', 'TA', 'Septiembre', 1),
+('Rosalva Ayuso', 'TA', 'Septiembre', 1),
+('Ana Sofia Ferrer', 'TA', 'Febrero', 1),
+('Angelica Corral', 'TA', 'Febrero', 1),
+('Ariel Lledo', 'TA', 'Septiembre', 1),
+('Mario Prats', 'LI', 'Febrero', 2),
+('Luis Angel Suarez', 'LI', 'Septiembre', 2),
+('Maria Dolores Diaz', 'LI', 'Septiembre', 2);
+
+-- CLASE
+INSERT INTO CLASE (id_aula, id_profesor, fecha, hora_inicio, hora_fin) VALUES
+(1, 1, '2024-04-15', '09:00', '11:00'),
+(2, 2, '2024-04-15', '11:00', '13:00'),
+(1, 3, '2024-04-16', '10:00', '12:00'),
+(2, 1, '2024-04-17', '14:00', '16:00'),
+(1, 2, '2024-04-18', '08:00', '10:00');
+
